@@ -7,16 +7,18 @@ from faker import Faker
 
 from kafka_producer import kafka_producer
 from mqtt_producer import mqtt_publisher
+from dotenv import load_dotenv
+load_dotenv()  # take environment variables from .env.
 
 
 
-number_of_generators = 5
+number_of_generators = 3
 generator_id_counter = 1
 fake = Faker()
 
 
 
-class fuel_generator:
+class emergency_generator():
     def __init__ (self) -> None:
         global generator_id_counter, fake
          
@@ -59,20 +61,20 @@ class fuel_generator:
 
 
 def runFuelGenerator():
-    fuelGenerator = fuel_generator()
+    emergencyGenerator = emergency_generator()
 
     kafkaProducer = kafka_producer()
     mqttProducer = mqtt_publisher(address="localhost", port=1883, clientID="EdgeGateway")
     mqttProducer.connect_client()
     
 
-    sleeptime = randint(60, 120)
+    sleeptime = randint(5, 10)
     
     while (True):
-        check_generator = {"generatorID": fuelGenerator.returnGeneratorID(),"lat": float (fuelGenerator.coord[0]), "lon": float(fuelGenerator.coord[1]),
-                                                                                                                "temperature": fuelGenerator.returnTemperature(), 
-                                                                                                                "pressure": fuelGenerator.returnPressure(), 
-                                                                                                                "fuel": fuelGenerator.returnFuelLevel() }
+        check_generator = {"generatorID": emergencyGenerator.returnGeneratorID(),"lat": float (emergencyGenerator.coord[0]), "lon": float(emergencyGenerator.coord[1]),
+                                                                                                                "temperature": emergencyGenerator.returnTemperature(), 
+                                                                                                                "pressure": emergencyGenerator.returnPressure(), 
+                                                                                                                "fuel": emergencyGenerator.returnFuelLevel() }
         print(check_generator,flush=True)
        
         kafkaProducer.sendSample(topic="emergency_generator",data=check_generator)
@@ -88,10 +90,10 @@ def runFuelGenerator():
 
 if __name__ == "__main__":
     
-    #x = 0
-    #while (x <= number_of_generators):
-     #   generator = threading.Thread(target=runFuelGenerator, daemon=True)
-     #   generator.start()
-     #   x+=1
-    # sleep(500000)
-    runFuelGenerator()
+    x = 0
+    while (x <= number_of_generators):
+       generator = threading.Thread(target=runFuelGenerator, daemon=True)
+       generator.start()
+       x+=1
+    sleep(500000)
+   # runFuelGenerator()
