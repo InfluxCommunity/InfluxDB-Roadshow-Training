@@ -64,7 +64,7 @@ def runFuelGenerator():
     emergencyGenerator = emergency_generator()
 
     kafkaProducer = kafka_producer()
-    mqttProducer = mqtt_publisher(address="localhost", port=1883, clientID="EdgeGateway")
+    mqttProducer = mqtt_publisher(address="localhost", port=1883, clientID=emergencyGenerator.returnGeneratorID())
     mqttProducer.connect_client()
     
 
@@ -90,7 +90,7 @@ def runFuelGenerator():
 
 if __name__ == "__main__":
     
-    x = 0
+    x = 1
     while (x <= number_of_generators):
        generator = threading.Thread(target=runFuelGenerator, daemon=True)
        generator.start()
