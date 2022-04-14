@@ -28,6 +28,7 @@ class mqtt_publisher:
 
 
     def publish_to_topic(self, topic: str, data: dict):
+        topic = topic +"/"+ str(data["generatorID"])
         message = json.dumps(data)
         self.client.publish(topic, message)
         print("succcesfully delivered message to MQTT topic")

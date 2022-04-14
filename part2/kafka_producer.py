@@ -140,7 +140,7 @@ class kafka_producer:
             # For long running
             # produce loops it is recommended to call poll() to serve these
             # delivery report callbacks.
-            self.p.produce(topic=topic, key=str(uuid4()), value=data,
+            self.p.produce(topic=topic, key=str(data['generatorID']), value=data,
                     on_delivery=delivery_report)
 
             # Trigger delivery report callbacks from previous produce calls.
