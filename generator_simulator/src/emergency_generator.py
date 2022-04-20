@@ -1,3 +1,5 @@
+from bdb import GENERATOR_AND_COROUTINE_FLAGS
+import os
 import threading
 from threading import Event
 
@@ -11,7 +13,6 @@ from mqtt_producer import mqtt_publisher
 
 
 
-number_of_generators = 3
 generator_id_counter = 1
 fake = Faker()
 
@@ -44,7 +45,8 @@ class emergency_generator():
         else: self.temperature = randint(170, 190)
         return self.temperature
 
-    def simLoad(self):    
+    def simLoad(self):
+        # TODO dont randomise    
         self.load = randint(0, 100)
        
 
@@ -93,10 +95,10 @@ class emergency_generator():
 
 
 
-def runEmergencyGenerator():
+def runEmergencyGenerator(mqtthost):
     emergencyGenerator = emergency_generator()
 
-    mqttProducer = mqtt_publisher(address="localhost", port=1883, clientID=emergencyGenerator.returnGeneratorID())
+    mqttProducer = mqtt_publisher(address=mqtthost, port=1883, clientID=emergencyGenerator.returnGeneratorID())
     mqttProducer.connect_client()
     
 
@@ -118,11 +120,14 @@ def runEmergencyGenerator():
 
 
 if __name__ == "__main__":
-    
-    x = 1
-    while (x <= number_of_generators):
-       generator = threading.Thread(target=runEmergencyGenerator, daemon=True)
-       generator.start()
-       x+=1
+    GENERATORS = os.getenv('GENERATORS', 1)
+    BROKER = os.getenv('BROKER', "localhost")
+
+
+    i =0
+    while (i < int(GENERATORS)):
+        generator = threading.Thread(target=runEmergencyGenerator, args=[BROKER], daemon=True)
+        generator.start()
+        i = i +1
+            
     Event().wait()
-   # runFuelGenerator()
