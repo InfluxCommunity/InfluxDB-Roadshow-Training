@@ -84,6 +84,22 @@ docker build generator_simulator/. -t emergency-generator:latest
 docker-compose up -d
 ```
 
+## Edge to Cloud Replication
+This section will teach you how to configure InfluxDB OSS to send data to InfluxDB Cloud.
+
+1. Create a remote connection
+
+```bash
+influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <ORG_ID> --remote-api-token <CLOUD_TOKEN>
+```
+
+2. Create a replication between a local bucket and a cloud bucket
+```bash
+influx replication create --local-bucket-id 1f158076adc417f5 --remote-bucket-id 621a1bf27327b2fc --remote-id 0947082f21c3e000  --name edge_to_cloud
+```
+
+
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
