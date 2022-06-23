@@ -7,12 +7,17 @@ services:
       - BROKER=mosquitto
     networks:
       - mqtt
+    depends_on:
+      - "mosquitto"
   telegraf:
     image: telegraf:latest
     volumes:
       - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     networks:
       - mqtt
+    depends_on:
+      - "mosquitto"
+      - "influxdb"
   mosquitto:
     image: eclipse-mosquitto:latest
     ports:
@@ -28,6 +33,13 @@ services:
       - ./influxdb/data:/var/lib/influxdb2:rw
     ports:
       - 8086:8086
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup 
+      - DOCKER_INFLUXDB_INIT_USERNAME=demouser
+      - DOCKER_INFLUXDB_INIT_PASSWORD=demouser
+      - DOCKER_INFLUXDB_INIT_ORG=influxdbroadshow 
+      - DOCKER_INFLUXDB_INIT_BUCKET=generators
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=edge
 
     networks:
       - mqtt
