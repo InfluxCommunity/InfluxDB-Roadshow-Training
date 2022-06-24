@@ -1,35 +1,41 @@
 # InfluxDB Roadshow Training
-## Step 9
+
+## Step 2
+docker build generator_simulator/. -t emergency-generator:latest
+
+## Step 3
+docker-compose up -d
+
 Admin Token: edge
 
-## Step 11
-influx config create --config-name trainingedge \
+## Step 4
+influx config create \
+  --config-name trainingedge \
   --host-url http://localhost:8086 \
   --org influxroadshow \
   --token edge \
   --active
 
-## Step 13
-Bucket ID: 
+## Step 5
+influx bucket list
 
-## Step 14
-influx auth create --write-bucket 
+## Step 6
+influx auth create --write-bucket <INSERT_BUCKET_ID>
 
-## Step 15
+## Step 7
 Write Token: 
 
-## Step 19
+## Step 11
 Name: local
 Host: http://localhost:8086
 Org: influxroadshow
+Token: edge
 
-Token: <Admin Token From Step 9>
 
-
-## Step 22
+## Step 14
   topics = ["emergency_generator/#"]
 
-## Step 23
+## Step 15
 [[inputs.mqtt_consumer.json_v2]]
      measurement_name = "genData"
        [[inputs.mqtt_consumer.json_v2.object]]
@@ -38,24 +44,52 @@ Token: <Admin Token From Step 9>
            tags = ["generatorID"]
 
 
-## Step 29
+## Step 16
+token = “<WRITE_TOKEN>”
+
+## Step 17
+docker container restart influxdb-roadshow-training-telegraf-1
+
+## Step 18
 influx query 'from(bucket:"generators")|>range(start:-1h)'
 
-## Step 32
+## Step 20
+Name: downsampled
+Delete data: 7 days
+
+
+## Step 22
+Name: downsample
+Every: 1m
+Offset 5s
+
+## Step 23
+
+
 import "influxdata/influxdb/tasks"
-option task = {name: "edge_to_cloud", every: 1m, offset:5s}
+
+option task = {name: "downsample", every: 1m, offset: 5s}
+
 from(bucket: "generators")
 |> range(start: tasks.lastSuccess(orTime: -1h))
-|> filter(fn: (r) => r["_field"] != "generatorID")
-|> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+|> aggregateWindow(every: 1m, fn: last, createEmpty: false)
+|> to(bucket: downsampled)
 
-## Step 35
+
+## Step 25
+Name: northbound
+Delete data: 30 days
+
+northbound Bucket ID:
 northbound Bucket Token: 
 
-## Step 36
+## Step 27
+downsampled bucket ID:
+
+## Step 28
 influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <ORG_ID> --remote-api-token <CLOUD_TOKEN>
 
-## Step 37
+## Step 29
 influx replication create --local-bucket-id <LOCAL_BUCKET_ID> --remote-bucket-id <REMOTE_BUCKET_ID> --remote-id <REMOTE_INSTANCE_ID>  --name edge_to_cloud
 
 
