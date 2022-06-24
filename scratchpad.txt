@@ -26,6 +26,8 @@ Org: influxroadshow
 Token: <Admin Token From Step 9>
 
 
+## Step 22
+  topics = ["emergency_generator/#"]
 
 ## Step 23
 [[inputs.mqtt_consumer.json_v2]]
