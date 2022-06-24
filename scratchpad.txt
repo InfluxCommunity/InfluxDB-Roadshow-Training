@@ -1,0 +1,61 @@
+# InfluxDB Roadshow Training
+## Step 9
+Admin Token: edge
+
+## Step 11
+influx config create --config-name trainingedge \
+  --host-url http://localhost:8086 \
+  --org influxroadshow \
+  --token edge \
+  --active
+
+## Step 13
+Bucket ID: 
+
+## Step 14
+influx auth create --write-bucket 
+
+## Step 15
+Write Token: 
+
+## Step 19
+Name: local
+Host: http://localhost:8086
+Org: influxroadshow
+
+Token: <Admin Token From Step 9>
+
+
+## Step 22
+  topics = ["emergency_generator/#"]
+
+## Step 23
+[[inputs.mqtt_consumer.json_v2]]
+     measurement_name = "genData"
+       [[inputs.mqtt_consumer.json_v2.object]]
+           path = "@this"
+           disable_prepend_keys = true
+           tags = ["generatorID"]
+
+
+## Step 29
+influx query 'from(bucket:"generators")|>range(start:-1h)'
+
+## Step 32
+import "influxdata/influxdb/tasks"
+option task = {name: "edge_to_cloud", every: 1m, offset:5s}
+from(bucket: "generators")
+|> range(start: tasks.lastSuccess(orTime: -1h))
+|> filter(fn: (r) => r["_field"] != "generatorID")
+|> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+
+## Step 35
+northbound Bucket Token: 
+
+## Step 36
+influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <ORG_ID> --remote-api-token <CLOUD_TOKEN>
+
+## Step 37
+influx replication create --local-bucket-id <LOCAL_BUCKET_ID> --remote-bucket-id <REMOTE_BUCKET_ID> --remote-id <REMOTE_INSTANCE_ID>  --name edge_to_cloud
+
+
