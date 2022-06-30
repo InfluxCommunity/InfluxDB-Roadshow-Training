@@ -73,23 +73,24 @@ option task = {name: "downsample", every: 1m, offset: 5s}
 from(bucket: "generators")
 |> range(start: tasks.lastSuccess(orTime: -1h))
 |> aggregateWindow(every: 1m, fn: last, createEmpty: false)
-|> to(bucket: downsampled)
+|> to(bucket: "downsampled")
 
 
 ## Step 25
 Name: northbound
 Delete data: 30 days
 
-northbound Bucket ID:
+northbound Bucket ID: 
 northbound Bucket Token: 
 
 ## Step 27
-downsampled bucket ID:
+downsampled bucket ID: 
 
 ## Step 28
-influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <ORG_ID> --remote-api-token <CLOUD_TOKEN>
+influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <>  --remote-api-token <>
+remote-ID: 
 
 ## Step 29
-influx replication create --local-bucket-id <LOCAL_BUCKET_ID> --remote-bucket-id <REMOTE_BUCKET_ID> --remote-id <REMOTE_INSTANCE_ID>  --name edge_to_cloud
+influx replication create --local-bucket-id <> --remote-bucket-id <> --remote-id <>  --name edge_to_cloud
 
 
