@@ -1,6 +1,6 @@
 # MQTT Emergency Generator Simulator
 
-This repoistory will allow you to spin up Emergency Generators producing fake IoT data. Each generator will write to its own MQTT topic the following values: 
+This repository will allow you to spin up Emergency Generators producing fake IoT data. Each generator will write to its own MQTT topic the following values: 
 
 1. Load
 2. Voltage
@@ -72,13 +72,7 @@ python3 src/emergency_generator.py
 git clone https://github.com/Jayclifford345/mqtt-emergency-generator.git
 ```
 
-2. Build the simulator docker image:
-
-```bash
-docker build generator_simulator/. -t emergency-generator:latest
-```
-
-3. Deploy the docker-compose file:
+2. Deploy the docker-compose file:
 
 ```bash
 docker-compose up -d
