@@ -87,10 +87,10 @@ northbound Bucket Token:
 downsampled bucket ID: 
 
 ## Step 28
-influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <>  --remote-api-token <>
+influx remote create --name edge2 --remote-url http://localhost:8087 --remote-org-id <>  --remote-api-token <>
+
 remote-ID: 
 
 ## Step 29
-influx replication create --local-bucket-id <> --remote-bucket-id <> --remote-id <>  --name edge_to_cloud
-
+influx replication create --local-bucket-id <> --remote-bucket-id <> --remote-id <>  --name edge_to_edge
 
