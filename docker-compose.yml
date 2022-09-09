@@ -28,9 +28,16 @@ services:
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
   influxdb:
     image: influxdb:latest
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup 
+      - DOCKER_INFLUXDB_INIT_USERNAME=demouser
+      - DOCKER_INFLUXDB_INIT_PASSWORD=demouser
+      - DOCKER_INFLUXDB_INIT_ORG=influxroadshow 
+      - DOCKER_INFLUXDB_INIT_BUCKET=generators
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=edge
     volumes:
       # Mount for influxdb data directory and configuration
-      - ./influxdb/data:/var/lib/influxdb2:rw
+      - ./influxdb/data:/var/lib/influxdb:rw
     ports:
       - 8086:8086
     networks:
@@ -47,6 +54,9 @@ services:
       - DOCKER_INFLUXDB_INIT_ORG=influxroadshow 
       - DOCKER_INFLUXDB_INIT_BUCKET=generators
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=edge
+    volumes:
+      # Mount for influxdb data directory and configuration
+      - ./influxdb2/data:/var/lib/influxdb:rw
     networks:
       - mqtt
  
