@@ -87,10 +87,10 @@ northbound Bucket Token:
 downsampled bucket ID: 
 
 ## Step 28
-influx remote create --name edge2 --remote-url http://localhost:8087 --remote-org-id <>  --remote-api-token <>
+influx remote create --name edge2 --remote-url http://influxdb2:8086 --remote-org-id ae6d7950b39f4337 --remote-api-token edge
 
 remote-ID: 
 
 ## Step 29
-influx replication create --local-bucket-id <> --remote-bucket-id <> --remote-id <>  --name edge_to_edge
+influx replication create --local-bucket-id 314a219d7c336599 --remote-bucket-id b6cd376fb5c1416d --remote-id 09f3722996954000  --name edge_to_edge --max-age 0
 
