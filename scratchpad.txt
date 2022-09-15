@@ -1,7 +1,7 @@
 # InfluxDB Roadshow Training
 
 ## Step 2
-docker build generator_simulator/. -t emergency-generator:latest
+docker build machine_simulator/. -t machines:latest
 
 ## Step 3
 docker-compose up -d
@@ -87,10 +87,10 @@ northbound Bucket Token:
 downsampled bucket ID: 
 
 ## Step 28
-influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <>  --remote-api-token <>
+influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id 05ea551cd21fb6e4  --remote-api-token m8nL4PuCFanx6DEqn7nqgZb1SEg7z3C-67p_wi3M155bqstYoJGYIRIDFfJEydBmZehuZW1j-v_wbOK0CLqRuw==
 remote-ID: 
 
 ## Step 29
-influx replication create --local-bucket-id <> --remote-bucket-id <> --remote-id <>  --name edge_to_cloud
+influx replication create --local-bucket-id 7f556037319b92dc  --remote-bucket-id 923841be768de25d  --remote-id 09fa63d9dfae0000  --name edge_to_cloud2
 
 

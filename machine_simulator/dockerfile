@@ -8,4 +8,4 @@ COPY src .
 RUN pip install --no-cache-dir -r requirements.txt
 
 
-CMD [ "python", "emergency_generator.py" ]
+CMD [ "python", "machine_generator.py" ]
