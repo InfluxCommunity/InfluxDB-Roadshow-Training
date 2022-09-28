@@ -90,12 +90,12 @@ This section will teach you how to configure InfluxDB OSS to send data to Influx
 1. Create a remote connection
 
 ```bash
-influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <ORG_ID> --remote-api-token <CLOUD_TOKEN>
+influx remote create --name telegraf --remote-url http://telegraf-out:8086 --remote-org-id 05ea551cd21fb6e4 --remote-api-token edge
 ```
 
 2. Create a replication between a local bucket and a cloud bucket
 ```bash
-influx replication create --local-bucket-id 1f158076adc417f5 --remote-bucket-id 621a1bf27327b2fc --remote-id 0947082f21c3e000  --name edge_to_cloud
+influx replication create --local-bucket-id 061512710c7de488 --remote-bucket-id 13dd5e3bc3998a75 --remote-id 0a0d096bafe60000  --name telegraf
 ```
 
 

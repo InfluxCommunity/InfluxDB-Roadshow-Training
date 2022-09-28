@@ -9,14 +9,22 @@ services:
       - mqtt
     depends_on:
       - "mosquitto"
-  telegraf:
+  telegraf-in:
     image: telegraf:latest
     volumes:
-      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./telegraf/completed/telegraf-in.conf:/etc/telegraf/telegraf.conf:ro
     networks:
       - mqtt
     depends_on:
       - "mosquitto"
+      - "influxdb"
+  telegraf-out:
+    image: telegraf:latest
+    volumes:
+      - ./telegraf/completed/telegraf-out.conf:/etc/telegraf/telegraf.conf:ro
+    networks:
+      - mqtt
+    depends_on:
       - "influxdb"
   mosquitto:
     image: eclipse-mosquitto:latest
