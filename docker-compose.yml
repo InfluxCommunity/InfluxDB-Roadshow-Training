@@ -12,7 +12,7 @@ services:
   telegraf:
     image: telegraf:latest
     volumes:
-      - ./telegraf/completed/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     networks:
       - mqtt
     depends_on:
