@@ -22,7 +22,7 @@ There are two ways to setup this Sim: Docker + Locally
 ```bash
 sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
 sudo apt-get update
-sudp apt-get install mosquitto
+sudo apt-get install mosquitto
 ```
 
 2. Start the Mosquitto broker:
