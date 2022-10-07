@@ -1,7 +1,9 @@
 version: '3.6'
 services:
   generators:
-    image: emergency-generator:latest
+    build:
+      context: .
+      dockerfile: generator_simulator/dockerfile
     environment:
       - GENERATORS=3
       - BROKER=mosquitto
