@@ -2,8 +2,8 @@ FROM python:3
 
 RUN mkdir demo
 WORKDIR /demo
-COPY requirements.txt .
-COPY src .
+COPY machine_simulator/requirements.txt .
+COPY machine_simulator/src .
 
 RUN pip install --no-cache-dir -r requirements.txt
 

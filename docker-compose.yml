@@ -1,7 +1,9 @@
 version: '3.6'
 services:
   machines:
-    image: machines:latest
+    build:
+      context: .
+      dockerfile: machine_simulator/dockerfile
     environment:
       - MACHINES=2
       - BROKER=mosquitto
