@@ -83,7 +83,7 @@ def runMachine(mqtthost, fault):
 
     mqttProducer = mqtt_publisher(address=mqtthost, port=1883, clientID=m.returnMachineID())
     mqttProducer.connect_client()
-    sleeptime = randint(1, 2)
+    sleeptime = 1
     m.setLoad(50)
     
     while (True):
