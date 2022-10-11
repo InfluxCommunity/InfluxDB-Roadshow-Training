@@ -36,7 +36,7 @@ class machine():
     def returnTemperature(self):
         currentLoad = self.load
         if currentLoad > 100: self.temperature = randint(80, 90)
-        if currentLoad >= 40: self.temperature = randint(35, 40)
+        elif currentLoad >= 40: self.temperature = randint(35, 40)
         elif currentLoad > 0: self.temperature = randint(29, 34)
         else: self.temperature = 20
         return self.temperature
@@ -49,7 +49,7 @@ class machine():
     def returnPower(self):
         currentLoad = self.load
         if currentLoad > 100: self.power = randint(300, 320)
-        if currentLoad >= 40: self.power = randint(200, 220)
+        elif currentLoad >= 40: self.power = randint(200, 220)
         elif currentLoad == 0: self.power = 0
         else: self.power = randint(180, 199)
         
@@ -60,7 +60,7 @@ class machine():
         currentLoad = self.load
         if currentLoad > 100: self.vibration = randint(300, 500)
         elif currentLoad == 0: self.vibration  = 0
-        if currentLoad >= 40: self.vibration = randint(80, 90)
+        elif currentLoad >= 40: self.vibration = randint(80, 90)
         else: self.vibration = randint(50, 79)
         return self.vibration
 
