@@ -26,7 +26,7 @@ class machine():
         self.load = 0
         self.power = 0
         self.vibration = 0
-        self.barcode= fake.ean(length=5)
+        self.barcode= fake.ean(length=8)
         self.provider=fake.company()
 
     def returnMachineID(self):
