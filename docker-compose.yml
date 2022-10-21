@@ -1,4 +1,4 @@
-version: '3.6'
+version: '2.1'
 services:
   generators:
     build:
@@ -32,7 +32,7 @@ services:
     image: influxdb:latest
     volumes:
       # Mount for influxdb data directory and configuration
-      - ./influxdb/data:/var/lib/influxdb2:rw
+      - influxdb:/var/lib/influxdb2:rw
     ports:
       - 8086:8086
     environment:
@@ -47,4 +47,4 @@ services:
       - mqtt
 networks: 
   mqtt:
-    name: mqtt
+
