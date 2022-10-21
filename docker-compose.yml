@@ -3,7 +3,7 @@ services:
   generators:
     build:
       context: .
-      dockerfile: generator_simulator/dockerfile
+      dockerfile: generator_simulator/Dockerfile
     environment:
       - GENERATORS=3
       - BROKER=mosquitto
@@ -14,7 +14,7 @@ services:
   telegraf:
     build:
       context: .
-      dockerfile: telegraf/dockerfile
+      dockerfile: telegraf/Dockerfile
     networks:
       - mqtt
     depends_on:
@@ -23,7 +23,7 @@ services:
   mosquitto:
     build:
       context: .
-      dockerfile: mosquitto/dockerfile
+      dockerfile: mosquitto/Dockerfile
     ports:
       - 1883:1883
     networks:
