@@ -12,22 +12,22 @@ services:
     depends_on:
       - "mosquitto"
   telegraf:
-    image: telegraf:latest
-    volumes:
-      - ./telegraf/completed/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    build:
+      context: .
+      dockerfile: telegraf/dockerfile
     networks:
       - mqtt
     depends_on:
       - "mosquitto"
       - "influxdb"
   mosquitto:
-    image: eclipse-mosquitto:latest
+    build:
+      context: .
+      dockerfile: mosquitto/dockerfile
     ports:
       - 1883:1883
     networks:
       - mqtt
-    volumes: 
-      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
   influxdb:
     image: influxdb:latest
     volumes:
@@ -47,4 +47,6 @@ services:
       - mqtt
 networks: 
   mqtt:
+volumes:
+  influxdb:
 
