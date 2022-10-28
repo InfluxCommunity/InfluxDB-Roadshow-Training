@@ -22,7 +22,8 @@ class emergency_generator():
     def __init__ (self) -> None:
         global generator_id_counter, fake
          
-        self.coord = fake.local_latlng(country_code='US', coords_only=False)
+        self.coord_dev = fake.local_latlng(country_code='US', coords_only=False)
+        self.coord_prd = fake.local_latlng(country_code='US', coords_only=False)
         self.generator_id = "generator" + str(generator_id_counter)
         generator_id_counter+=1
         self.temperature = 0
@@ -85,14 +86,27 @@ class emergency_generator():
     def returnGenHealth(self):
         # trigger load first as needs to be constent:
         self.simLoad()
-        return {"generatorID": self.returnGeneratorID(),
-                "lat": float (self.coord[0]), 
-                "lon": float(self.coord[1]),
+        return { "device":{
+      "generatorID": self.returnGeneratorID(),
+      "coord":[ {
+            "deployment-type": "production",
+                "lat": float (self.coord_prd[0]), 
+                "lon": float(self.coord_prd[1]),
+         },
+         {
+            "deployment-type": "development",
+                "lat": float (self.coord_dev[0]), 
+                "lon": float(self.coord_dev[1]),
+         }
+      ]
+   },
+   "payload":{
                 "temperature": self.returnTemperature(), 
                 "power": self.returnPower(),
                 "load": self.load, 
-                "fuel": self.returnFuelLevel() }
-
+                "fuel": self.returnFuelLevel()
+   }
+}
 
 
 def runEmergencyGenerator(mqtthost):
