@@ -1,12 +1,5 @@
 # InfluxDB Roadshow Training
 
-## Step 2
-docker build generator_simulator/. -t emergency-generator:latest
-
-## Step 3
-docker-compose up -d
-
-Admin Token: edge
 
 ## Step 4
 influx config create \
@@ -87,10 +80,10 @@ northbound Bucket Token:
 downsampled bucket ID: 
 
 ## Step 28
-influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <>  --remote-api-token <>
+influx remote create --name cloud-dedicated --remote-url https://data.demo.eng-resources.influxdata.com  --remote-org-id 007358b2bdd26c25   --remote-api-token username:password
 remote-ID: 
 
 ## Step 29
-influx replication create --local-bucket-id <> --remote-bucket-id <> --remote-id <>  --name edge_to_cloud
+influx replication create --local-bucket-id cb8bdfd76ece4f0b --remote-bucket Smart_Power --remote-id 0ae6b542e46f2000  --name edge_to_cloud
 
 
