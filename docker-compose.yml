@@ -58,4 +58,4 @@ services:
       - mqtt
 networks: 
   mqtt:
-    name: mqtt
+
