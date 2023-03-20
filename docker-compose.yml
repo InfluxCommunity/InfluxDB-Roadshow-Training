@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3'
 services:
   generators:
     build:
@@ -42,7 +42,18 @@ services:
       - DOCKER_INFLUXDB_INIT_ORG=influxroadshow 
       - DOCKER_INFLUXDB_INIT_BUCKET=generators
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=edge
-
+      - DOCKER_INFLUXDB_INIT_RETENTION=1d
+    networks:
+      - mqtt
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=influxdata-flightsql-datasource
+    volumes: 
+      - ./grafana/plugins/influxdata-flightsql-datasource:/var/lib/grafana/plugins/influxdata-flightsql-datasource
     networks:
       - mqtt
 networks: 
