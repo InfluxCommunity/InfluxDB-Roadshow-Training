@@ -53,9 +53,10 @@ services:
       - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=influxdata-flightsql-datasource
     volumes: 
       - ./grafana/plugins/influxdata-flightsql-datasource:/var/lib/grafana/plugins/influxdata-flightsql-datasource
-      - ./grafana/data/:/var/lib/grafana/
+      - grafana:/var/lib/grafana/
     networks:
       - mqtt
 networks: 
   mqtt:
-
+volumes:
+  grafana:
