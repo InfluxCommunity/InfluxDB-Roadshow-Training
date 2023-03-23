@@ -76,3 +76,22 @@ influx replication create --local-bucket-id <> --remote-bucket-id <> --remote-id
 
 ## Step 25
 influx replication list
+
+
+## Grafana Query 1 (Basic)
+SELECT time, fuel, "generatorID"
+FROM "genData" 
+WHERE  $__timeRange(time)
+
+## Grafana Query 2 (Advanced)
+SELECT 
+ selector_last(fuel, time)['time'] AS time,
+ selector_last(fuel, time)['value'] AS fuel,
+"generatorID",
+ selector_last(lat, time)['value'] AS lat,
+ selector_last(lon, time)['value'] AS lon
+
+FROM "genData" 
+WHERE  $__timeRange(time) 
+group by 3
+
