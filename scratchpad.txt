@@ -1,10 +1,9 @@
 # InfluxDB Roadshow Training
 
 ## Step 2
-docker build generator_simulator/. -t emergency-generator:latest
+chmod +x ./setup.sh 
+./setup.sh
 
-## Step 3
-docker-compose up -d
 
 Admin Token: edge
 
@@ -25,17 +24,12 @@ influx auth create --write-bucket <INSERT_BUCKET_ID>
 ## Step 7
 Write Token: 
 
+
+
+
 ## Step 11
-Name: local
-Host: http://localhost:8086
-Org: influxroadshow
-Token: edge
-
-
-## Step 14
   topics = ["emergency_generator/#"]
 
-## Step 15
 [[inputs.mqtt_consumer.json_v2]]
      measurement_name = "genData"
        [[inputs.mqtt_consumer.json_v2.object]]
@@ -44,53 +38,41 @@ Token: edge
            tags = ["generatorID"]
 
 
-## Step 16
+## Step 12
 token = “<WRITE_TOKEN>”
 
-## Step 17
+## Step 13
 docker container restart influxdb-roadshow-training-telegraf-1
 
-## Step 18
+## Step 14
 influx query 'from(bucket:"generators")|>range(start:-1h)'
 
+## Step 15
+influx bucket create --name downsampled -r 2d
+
+
+## Step 16
+influx bucket list
+
+
 ## Step 20
-Name: downsampled
-Delete data: 7 days
-
-
-## Step 22
-Name: downsample
-Every: 1m
-Offset 5s
-
-## Step 23
-
-
-import "influxdata/influxdb/tasks"
-
-option task = {name: "downsample", every: 1m, offset: 5s}
-
-from(bucket: "generators")
-|> range(start: tasks.lastSuccess(orTime: -1h))
-|> aggregateWindow(every: 1m, fn: last, createEmpty: false)
-|> to(bucket: "downsampled")
-
-
-## Step 25
 Name: northbound
 Delete data: 30 days
 
+## Step 21
 northbound Bucket ID: 
 northbound Bucket Token: 
 
-## Step 27
+## Step 22
 downsampled bucket ID: 
 
-## Step 28
+## Step 23
 influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <>  --remote-api-token <>
 remote-ID: 
 
-## Step 29
+## Step 24
 influx replication create --local-bucket-id <> --remote-bucket-id <> --remote-id <>  --name edge_to_cloud
 
 
+## Step 25
+influx replication list
