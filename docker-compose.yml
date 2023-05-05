@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3'
 services:
   machines:
     build:
@@ -44,6 +44,17 @@ services:
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=edge
     networks:
       - mqtt
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    environment:
+      - GF_INSTALL_PLUGINS=influxdata-flightsql-datasource
+    volumes: 
+      - grafana:/var/lib/grafana/
+    networks:
+      - mqtt
 networks: 
   mqtt:
-    name: mqtt
+volumes:
+  grafana:
