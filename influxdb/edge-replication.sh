@@ -9,7 +9,7 @@ EXISTING_STACK_ID=$(influx stacks init --hide-headers --stack-name edge-replicat
 fi
 
 echo "Found stack: $EXISTING_STACK_ID"
-influx apply --force yes --file /docker-entrypoint-initdb.d/edge-replication.yml --stack-id $EXISTING_STACK_ID 
+influx apply --force yes --file ./influxdb/edge-replication.yml --stack-id $EXISTING_STACK_ID 
 
 # setup EDR to Cloud
 
@@ -21,7 +21,7 @@ if [ ! -z "$EXISTING_REPLICATION_ID" ]; then influx replication delete --id $EXI
 EXISTING_REMOTE_ID=$(influx remote list --name cloud --hide-headers |awk '{print $1}') 
 if [ ! -z "$EXISTING_REMOTE_ID" ]; then influx remote delete --id ${EXISTING_REMOTE_ID}; fi
 
-influx remote create --name cloud --org ${DOCKER_INFLUXDB_INIT_ORG} --remote-org-id ${INFLUXDB_CLOUD_ORG_ID} --remote-url ${INFLUXDB_CLOUD_HOST} --remote-api-token ${INFLUXDB_CLOUD_TOKEN}
+influx remote create --name cloud --remote-org-id ${INFLUXDB_CLOUD_ORG_ID} --remote-url ${INFLUXDB_CLOUD_HOST} --remote-api-token ${INFLUXDB_CLOUD_TOKEN}
 
 REMOTE_ID=$(influx remote list --name cloud --hide-headers |awk '{print $1}') 
 LOCAL_BUCKET_ID=$(influx bucket list --name downsampled --hide-headers |awk '{print $1}') 
