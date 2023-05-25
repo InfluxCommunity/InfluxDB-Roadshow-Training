@@ -12,6 +12,7 @@ echo "Found stack: $EXISTING_STACK_ID"
 influx apply --force yes --file ./influxdb/edge-replication.yml --stack-id $EXISTING_STACK_ID 
 
 # setup EDR to Cloud
+source ./influxdb/.env
 
 if [ -z "$INFLUXDB_CLOUD_TOKEN" ]; then echo "You must add your remote cloud credentials to a .secrets file"; exit 1; fi
 
@@ -27,5 +28,5 @@ REMOTE_ID=$(influx remote list --name cloud --hide-headers |awk '{print $1}')
 LOCAL_BUCKET_ID=$(influx bucket list --name downsampled --hide-headers |awk '{print $1}') 
 
 
-influx replication create --name edge-to-cloud --org ${DOCKER_INFLUXDB_INIT_ORG} --remote-id $REMOTE_ID --local-bucket-id $LOCAL_BUCKET_ID --remote-bucket-id ${INFLUXDB_CLOUD_BUCKET_ID}
+influx replication create --name edge-to-cloud --org MachineCo --remote-id $REMOTE_ID --local-bucket-id $LOCAL_BUCKET_ID --remote-bucket-id ${INFLUXDB_CLOUD_BUCKET_ID}
 
