@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_FLIGHTSQL",
-      "label": "FlightSQL",
+      "name": "DS_SERVERLESS",
+      "label": "serverless",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdata-flightsql-datasource",
@@ -27,13 +27,13 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "9.4.3"
+      "version": "10.0.3-cloud.4.aed62623"
     },
     {
       "type": "datasource",
       "id": "influxdata-flightsql-datasource",
       "name": "FlightSQL",
-      "version": "0.1.6"
+      "version": "1.0.5"
     },
     {
       "type": "panel",
@@ -74,7 +74,7 @@
     {
       "datasource": {
         "type": "influxdata-flightsql-datasource",
-        "uid": "${DS_FLIGHTSQL}"
+        "uid": "${DS_SERVERLESS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -184,7 +184,7 @@
           "zoom": 4
         }
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "10.0.3-cloud.4.aed62623",
       "targets": [
         {
           "columns": [
@@ -194,7 +194,7 @@
           ],
           "datasource": {
             "type": "influxdata-flightsql-datasource",
-            "uid": "${DS_FLIGHTSQL}"
+            "uid": "${DS_SERVERLESS}"
           },
           "format": "table",
           "groupBy": "",
@@ -219,7 +219,7 @@
     {
       "datasource": {
         "type": "influxdata-flightsql-datasource",
-        "uid": "${DS_FLIGHTSQL}"
+        "uid": "${DS_SERVERLESS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -310,7 +310,7 @@
           ],
           "datasource": {
             "type": "influxdata-flightsql-datasource",
-            "uid": "${DS_FLIGHTSQL}"
+            "uid": "${DS_SERVERLESS}"
           },
           "format": "table",
           "groupBy": "",
@@ -344,7 +344,7 @@
     {
       "datasource": {
         "type": "influxdata-flightsql-datasource",
-        "uid": "${DS_FLIGHTSQL}"
+        "uid": "${DS_SERVERLESS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -397,7 +397,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "10.0.3-cloud.4.aed62623",
       "targets": [
         {
           "columns": [
@@ -407,7 +407,7 @@
           ],
           "datasource": {
             "type": "influxdata-flightsql-datasource",
-            "uid": "${DS_FLIGHTSQL}"
+            "uid": "${DS_SERVERLESS}"
           },
           "format": "table",
           "groupBy": "",
@@ -432,7 +432,7 @@
     {
       "datasource": {
         "type": "influxdata-flightsql-datasource",
-        "uid": "${DS_FLIGHTSQL}"
+        "uid": "${DS_SERVERLESS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -485,7 +485,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "10.0.3-cloud.4.aed62623",
       "targets": [
         {
           "columns": [
@@ -495,13 +495,13 @@
           ],
           "datasource": {
             "type": "influxdata-flightsql-datasource",
-            "uid": "${DS_FLIGHTSQL}"
+            "uid": "${DS_SERVERLESS}"
           },
           "format": "table",
           "groupBy": "",
           "limit": "",
           "orderBy": "",
-          "queryText": "\n select \n selector_last(load, time)['value'] AS load\nFROM \"genData\" \nWHERE  $__timeRange(time) AND \"generatorID\" = 'generator1'\n\n\n\n ",
+          "queryText": "\n select \n selector_last(load, time)['value'] AS load\nFROM \"genData\" \nWHERE  $__timeRange(time) AND \"generatorID\" = 'generator2'\n\n\n\n ",
           "rawEditor": true,
           "rawQuery": true,
           "refId": "A",
@@ -513,14 +513,14 @@
           ]
         }
       ],
-      "title": "Generator 1 - Load",
+      "title": "Generator 2 - Load",
       "transformations": [],
       "type": "gauge"
     },
     {
       "datasource": {
         "type": "influxdata-flightsql-datasource",
-        "uid": "${DS_FLIGHTSQL}"
+        "uid": "${DS_SERVERLESS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -573,7 +573,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "10.0.3-cloud.4.aed62623",
       "targets": [
         {
           "columns": [
@@ -583,7 +583,7 @@
           ],
           "datasource": {
             "type": "influxdata-flightsql-datasource",
-            "uid": "${DS_FLIGHTSQL}"
+            "uid": "${DS_SERVERLESS}"
           },
           "format": "table",
           "groupBy": "",
@@ -622,6 +622,6 @@
   "timezone": "",
   "title": "Fuel Generators",
   "uid": "CSkdbiBVk",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
