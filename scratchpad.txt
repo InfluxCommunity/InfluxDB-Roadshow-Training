@@ -1,13 +1,15 @@
-# InfluxDB Roadshow Training
+# InfluxDB Roadshow Training #
 
-## Step 2
-chmod +x ./setup.sh 
-./setup.sh
+######### Setup ##########
 
+## Step 1
+docker compose up -d 
+
+######### Edge ##########
 
 Admin Token: edge
 
-## Step 4
+## Step 2
 influx config create \
   --config-name trainingedge \
   --host-url http://localhost:8086 \
@@ -15,19 +17,19 @@ influx config create \
   --token edge \
   --active
 
-## Step 5
+## Step 3
 influx bucket list
 
-## Step 6
+## Step 4
 influx auth create --write-bucket <INSERT_BUCKET_ID>
 
-## Step 7
+## Step 4* 
+influx auth list
+
+## Step 5
 Write Token: 
 
-
-
-
-## Step 11
+## Step 6
   topics = ["emergency_generator/#"]
 
 [[inputs.mqtt_consumer.json_v2]]
@@ -38,52 +40,56 @@ Write Token:
            tags = ["generatorID"]
 
 
-## Step 12
+## Step 7
 token = “<WRITE_TOKEN>”
 
-## Step 13
+## Step 8
 docker container restart influxdb-roadshow-training-telegraf-1
 
-## Step 14
+## Step 9
 influx query 'from(bucket:"generators")|>range(start:-1h)'
 
-## Step 15
+## Step 10
 influx bucket create --name downsampled -r 2d
 
-
-## Step 16
+## Step 11
 influx bucket list
 
+## Step 12
+influx task create -f flux/downsample.flux 
 
-## Step 20
+## Step 13
 Name: northbound
 Delete data: 30 days
 
-## Step 21
+## Step 14
 northbound Bucket ID: 
 northbound Bucket Token: 
 
-## Step 22
+## Step 15
 downsampled bucket ID: 
 
-## Step 23
+## Step 16
 influx remote create --name cloud --remote-url https://us-east-1-1.aws.cloud2.influxdata.com --remote-org-id <>  --remote-api-token <>
 remote-ID: 
 
-## Step 24
+## Step 17
 influx replication create --local-bucket-id <> --remote-bucket-id <> --remote-id <>  --name edge_to_cloud
 
 
-## Step 25
+## Step 18
 influx replication list
 
+######### CLOUD ##########
 
-## Grafana Query 1 (Basic)
+## Step 19
+
 SELECT time, fuel, "generatorID"
 FROM "genData" 
 WHERE  $__timeRange(time)
 
-## Grafana Query 2 (Advanced)
+## Step 20
+
 SELECT 
  selector_last(fuel, time)['time'] AS time,
  selector_last(fuel, time)['value'] AS fuel,
@@ -94,4 +100,15 @@ SELECT
 FROM "genData" 
 WHERE  $__timeRange(time) 
 group by 3
+
+## Step 21
+
+SELECT
+  "generatorID",
+  time,
+  fuel
+  FROM "genData" WHERE $__timeRange(time) 
+  ORDER BY time
+
+
 
