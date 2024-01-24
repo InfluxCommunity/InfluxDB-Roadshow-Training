@@ -45,12 +45,11 @@ services:
       - DOCKER_INFLUXDB_INIT_RETENTION=1d
     networks:
       - mqtt
+  # TODO: Should be put back to latest once 10.3.1 is released
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:10.3.1
     ports:
       - 3000:3000
-    environment:
-      - GF_INSTALL_PLUGINS=influxdata-flightsql-datasource
     volumes: 
       - grafana:/var/lib/grafana/
     networks:

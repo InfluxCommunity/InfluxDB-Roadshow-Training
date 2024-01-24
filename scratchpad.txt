@@ -85,8 +85,8 @@ influx replication list
 ## Step 19
 
 SELECT time, fuel, "generatorID"
-FROM "genData" 
-WHERE  $__timeRange(time)
+FROM "genData"
+WHERE time >= $__timeFrom AND time <= $__timeTo
 
 ## Step 20
 
@@ -98,8 +98,9 @@ SELECT
  selector_last(lon, time)['value'] AS lon
 
 FROM "genData" 
-WHERE  $__timeRange(time) 
+WHERE time >= $__timeFrom AND time <= $__timeTo
 group by 3
+
 
 ## Step 21
 
@@ -107,7 +108,8 @@ SELECT
   "generatorID",
   time,
   fuel
-  FROM "genData" WHERE $__timeRange(time) 
+  FROM "genData" 
+  WHERE time >= $__timeFrom AND time <= $__timeTo
   ORDER BY time
 
 
