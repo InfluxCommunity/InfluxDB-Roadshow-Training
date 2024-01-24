@@ -1,12 +1,12 @@
 {
   "__inputs": [
     {
-      "name": "DS_SERVERLESS",
-      "label": "serverless",
+      "name": "DS_INFLUXDB_V3",
+      "label": "Influxdb V3",
       "description": "",
       "type": "datasource",
-      "pluginId": "influxdata-flightsql-datasource",
-      "pluginName": "FlightSQL"
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
     }
   ],
   "__elements": {},
@@ -27,13 +27,13 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.0.3-cloud.4.aed62623"
+      "version": "10.4.0-65283"
     },
     {
       "type": "datasource",
-      "id": "influxdata-flightsql-datasource",
-      "name": "FlightSQL",
-      "version": "1.0.5"
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
     },
     {
       "type": "panel",
@@ -73,8 +73,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "influxdata-flightsql-datasource",
-        "uid": "${DS_SERVERLESS}"
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB_V3}"
       },
       "fieldConfig": {
         "defaults": {
@@ -109,7 +109,8 @@
                 "value": 500
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -184,32 +185,35 @@
           "zoom": 4
         }
       },
-      "pluginVersion": "10.0.3-cloud.4.aed62623",
+      "pluginVersion": "10.4.0-65283",
       "targets": [
         {
-          "columns": [
-            {
-              "value": "fuel"
-            }
-          ],
+          "dataset": "iox",
           "datasource": {
-            "type": "influxdata-flightsql-datasource",
-            "uid": "${DS_SERVERLESS}"
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB_V3}"
           },
+          "editorMode": "code",
           "format": "table",
-          "groupBy": "",
-          "limit": "",
-          "orderBy": "",
-          "queryText": "\n select \n selector_last(fuel, time)['time'] AS time,\n selector_last(fuel, time)['value'] AS fuel,\n\"generatorID\",\n selector_last(lat, time)['value'] AS lat,\nselector_last(lon, time)['value'] AS lon\nFROM \"genData\" \nWHERE  $__timeRange(time) \n group by 3\n\n\n\n ",
-          "rawEditor": true,
           "rawQuery": true,
+          "rawSql": "SELECT \n selector_last(fuel, time)['time'] AS time,\n selector_last(fuel, time)['value'] AS fuel,\n\"generatorID\",\n selector_last(lat, time)['value'] AS lat,\n selector_last(lon, time)['value'] AS lon\n\nFROM \"genData\" \nWHERE time >= $__timeFrom AND time <= $__timeTo\ngroup by 3",
           "refId": "A",
-          "table": "\"genData\"",
-          "wheres": [
-            {
-              "value": ""
-            }
-          ]
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "Fuel Levels",
@@ -218,8 +222,8 @@
     },
     {
       "datasource": {
-        "type": "influxdata-flightsql-datasource",
-        "uid": "${DS_SERVERLESS}"
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB_V3}"
       },
       "fieldConfig": {
         "defaults": {
@@ -227,6 +231,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -240,6 +245,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -277,7 +283,8 @@
                 "value": 500
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -303,29 +310,32 @@
       "pluginVersion": "9.4.3",
       "targets": [
         {
-          "columns": [
-            {
-              "value": "fuel"
-            }
-          ],
+          "dataset": "iox",
           "datasource": {
-            "type": "influxdata-flightsql-datasource",
-            "uid": "${DS_SERVERLESS}"
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB_V3}"
           },
+          "editorMode": "code",
           "format": "table",
-          "groupBy": "",
-          "limit": "",
-          "orderBy": "",
-          "queryText": " select $__dateBin(time),\n avg(fuel) as fuel,\n \"generatorID\"\n FROM \"genData\" \nWHERE  $__timeRange(time) \ngroup by 3, 1\norder by 1\n ",
-          "rawEditor": true,
           "rawQuery": true,
+          "rawSql": "SELECT time, fuel, \"generatorID\"\nFROM \"genData\"\nWHERE time >= $__timeFrom AND time <= $__timeTo",
           "refId": "A",
-          "table": "\"genData\"",
-          "wheres": [
-            {
-              "value": ""
-            }
-          ]
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "Fuel Levels",
@@ -343,8 +353,8 @@
     },
     {
       "datasource": {
-        "type": "influxdata-flightsql-datasource",
-        "uid": "${DS_SERVERLESS}"
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB_V3}"
       },
       "fieldConfig": {
         "defaults": {
@@ -374,7 +384,8 @@
                 "value": 90
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -386,6 +397,8 @@
       },
       "id": 7,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -395,34 +408,38 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "10.0.3-cloud.4.aed62623",
+      "pluginVersion": "10.4.0-65283",
       "targets": [
         {
-          "columns": [
-            {
-              "value": "fuel"
-            }
-          ],
+          "dataset": "iox",
           "datasource": {
-            "type": "influxdata-flightsql-datasource",
-            "uid": "${DS_SERVERLESS}"
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB_V3}"
           },
+          "editorMode": "code",
           "format": "table",
-          "groupBy": "",
-          "limit": "",
-          "orderBy": "",
-          "queryText": "\n select \n selector_last(load, time)['value'] AS load\nFROM \"genData\" \nWHERE  $__timeRange(time) AND \"generatorID\" = 'generator1'\n\n\n\n ",
-          "rawEditor": true,
           "rawQuery": true,
+          "rawSql": "\n select \n selector_last(load, time)['value'] AS load\nFROM \"genData\" \nWHERE time >= $__timeFrom AND time <= $__timeTo AND \"generatorID\" = 'generator1'",
           "refId": "A",
-          "table": "\"genData\"",
-          "wheres": [
-            {
-              "value": ""
-            }
-          ]
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "Generator 1 - Load",
@@ -431,8 +448,8 @@
     },
     {
       "datasource": {
-        "type": "influxdata-flightsql-datasource",
-        "uid": "${DS_SERVERLESS}"
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB_V3}"
       },
       "fieldConfig": {
         "defaults": {
@@ -462,7 +479,8 @@
                 "value": 90
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -474,6 +492,8 @@
       },
       "id": 9,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -483,34 +503,38 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "10.0.3-cloud.4.aed62623",
+      "pluginVersion": "10.4.0-65283",
       "targets": [
         {
-          "columns": [
-            {
-              "value": "fuel"
-            }
-          ],
+          "dataset": "iox",
           "datasource": {
-            "type": "influxdata-flightsql-datasource",
-            "uid": "${DS_SERVERLESS}"
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB_V3}"
           },
+          "editorMode": "code",
           "format": "table",
-          "groupBy": "",
-          "limit": "",
-          "orderBy": "",
-          "queryText": "\n select \n selector_last(load, time)['value'] AS load\nFROM \"genData\" \nWHERE  $__timeRange(time) AND \"generatorID\" = 'generator2'\n\n\n\n ",
-          "rawEditor": true,
           "rawQuery": true,
+          "rawSql": " select \n selector_last(load, time)['value'] AS load\nFROM \"genData\" \nWHERE time >= $__timeFrom AND time <= $__timeTo AND \"generatorID\" = 'generator2'",
           "refId": "A",
-          "table": "\"genData\"",
-          "wheres": [
-            {
-              "value": ""
-            }
-          ]
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "Generator 2 - Load",
@@ -519,8 +543,8 @@
     },
     {
       "datasource": {
-        "type": "influxdata-flightsql-datasource",
-        "uid": "${DS_SERVERLESS}"
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB_V3}"
       },
       "fieldConfig": {
         "defaults": {
@@ -550,7 +574,8 @@
                 "value": 90
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -562,6 +587,8 @@
       },
       "id": 8,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -571,34 +598,38 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "10.0.3-cloud.4.aed62623",
+      "pluginVersion": "10.4.0-65283",
       "targets": [
         {
-          "columns": [
-            {
-              "value": "fuel"
-            }
-          ],
+          "dataset": "iox",
           "datasource": {
-            "type": "influxdata-flightsql-datasource",
-            "uid": "${DS_SERVERLESS}"
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB_V3}"
           },
+          "editorMode": "code",
           "format": "table",
-          "groupBy": "",
-          "limit": "",
-          "orderBy": "",
-          "queryText": "\n select \n selector_last(load, time)['value'] AS load\nFROM \"genData\" \nWHERE  $__timeRange(time) AND \"generatorID\" = 'generator3'\n\n\n\n ",
-          "rawEditor": true,
           "rawQuery": true,
+          "rawSql": "\n select \n selector_last(load, time)['value'] AS load\nFROM \"genData\" \nWHERE  time >= $__timeFrom AND time <= $__timeTo AND \"generatorID\" = 'generator3'",
           "refId": "A",
-          "table": "\"genData\"",
-          "wheres": [
-            {
-              "value": ""
-            }
-          ]
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "Generator 3 - Load",
@@ -606,22 +637,21 @@
       "type": "gauge"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "revision": 1,
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Fuel Generators",
   "uid": "CSkdbiBVk",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }
